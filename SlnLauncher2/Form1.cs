@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -102,7 +100,7 @@ namespace SlnLauncher2
                     {
                         (Keys.Alt | Keys.T) => OpenWindowsTerminal,
                         (Keys.Alt | Keys.S) => OpenRepositoryWithSourceTree,
-                        (Keys.None | Keys.Enter) => OpenSln,
+                        (Keys.None | Keys.Enter) => OpenSolutionWithRider,
                         (Keys.Shift | Keys.Enter) => OpenContainingFolder,
                         (Keys.Control | Keys.Enter) => OpenVisualStudioCode,
                         (Keys.Alt | Keys.Enter) => OpenSolutionWithVisualStudio,
@@ -165,7 +163,7 @@ namespace SlnLauncher2
             var index = lstSln.IndexFromPoint(e.Location);
             if (index != ListBox.NoMatches)
             {
-                StartFromIndex(index, OpenSln);
+                StartFromIndex(index, OpenSolutionWithRider);
             }
         }
 
@@ -257,10 +255,25 @@ namespace SlnLauncher2
             Process.Start(path, fi.FullName);
         }
 
-        private static void OpenSln(string item)
+        private static readonly Lazy<string> _riderPath = new Lazy<string>(GetRiderPath);
+
+        private static string GetRiderPath()
+        {
+            return Constants
+                .RiderPaths
+                .SelectMany(p => Directory
+                    .GetDirectories(p, "JetBrains Rider *", SearchOption.TopDirectoryOnly)
+                    .OrderByDescending(i => i)
+                    )
+                .Select(p => Path.Combine(p, @"bin\rider64.exe"))
+                .Where(File.Exists)
+                .FirstOrDefault();
+        }
+
+        private static void OpenSolutionWithRider(string item)
         {
             var fi = new FileInfo(item);
-            Process.Start(fi.FullName);
+            Process.Start(_riderPath.Value, fi.FullName);
         }
 
         private static void OpenWindowsTerminal(string item)
@@ -268,7 +281,7 @@ namespace SlnLauncher2
             var directory = GetDirectoryFullName(item);
             var windowsTerminal = Constants.WindowsTerminalPath;
 
-            Process.Start(new ProcessStartInfo(fileName: windowsTerminal) {WorkingDirectory = directory,});
+            Process.Start(new ProcessStartInfo(fileName: windowsTerminal) { WorkingDirectory = directory, });
         }
 
         private static void OpenContainingFolder(string item)
