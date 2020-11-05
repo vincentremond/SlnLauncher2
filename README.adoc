@@ -2,5 +2,5 @@
 
 == TODO
 
-- [ ] Bug: Fix error on folder start
-- [ ] Improve : use config instead of constants
+- [x] Bug: Fix error on folder start
+- [x] Improve : use config instead of constants

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -17,7 +20,15 @@ namespace SlnLauncher2
                 action();
             }
         }
-        
+
+        public static IDictionary<TKey, TElement[]> ToDictionary<TKey, TElement>(this IEnumerable<IGrouping<TKey, TElement>> source)
+        {
+            return source.ToDictionary(
+                g => g.Key,
+                g => g.ToArray()
+            );
+        }
+
         public static Thread StartNewThread(Action action)
         {
             var result = new Thread(() => action());
@@ -29,5 +40,8 @@ namespace SlnLauncher2
         {
             return min <= i && i <= max;
         }
+
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> source) => source.SelectMany(i => i);
+        public static IEnumerable<T> Sort<T>(this IEnumerable<T> source) => source.OrderBy(i => i);
     }
 }

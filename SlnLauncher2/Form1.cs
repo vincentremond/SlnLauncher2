@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SlnLauncher2.DTO;
 
 namespace SlnLauncher2
 {
@@ -39,17 +40,31 @@ namespace SlnLauncher2
 
         private string[] UpdateProjectsListFromDisk()
         {
-            return LauncherConfiguration.Current
+            var all = LauncherConfiguration.Current
                 .BasePaths
                 .SelectMany(path => GetFiles(path).SelectMany(s => s))
-                .OrderBy(s => s)
                 .ToArray();
+            var cleaned = new DuplicateCleaner().Clean(all);
+            var result = cleaned
+                .Select(c => Path.Combine(c.Path, c.Name))
+                .Sort()
+                .ToArray();
+            return result;
         }
 
-        private static IEnumerable<string[]> GetFiles(string path)
+        private static IEnumerable<IEnumerable<ItemDescriptor>> GetFiles(string path)
         {
-            yield return Directory.GetFiles(path, "*.sln", SearchOption.AllDirectories);
-            yield return Directory.GetDirectories(path, ".git", SearchOption.AllDirectories);
+            yield return (
+                from file in Directory.GetFiles(path, "*.sln", SearchOption.AllDirectories)
+                let fi = new FileInfo(file)
+                select new FileDescriptor(fi.Directory.FullName, fi.Name)
+            );
+
+            yield return (
+                from file in Directory.GetDirectories(path, ".git", SearchOption.AllDirectories)
+                let fi = new DirectoryInfo(file)
+                select new DirectoryDescriptor(fi.Parent.FullName, fi.Name)
+            );
         }
 
         private string[] TryInitProjectsListFromCache()
@@ -178,7 +193,7 @@ namespace SlnLauncher2
             lstSln.InvokeIfRequired(
                 () =>
                 {
-                    var proj = lstBaseFolders.SelectedItem?.ToString()?.Replace("/", "\\") ??  string.Empty;
+                    var proj = lstBaseFolders.SelectedItem?.ToString()?.Replace("/", "\\") ?? string.Empty;
 
                     var search = tbxSearch.Text.Replace("/", "\\");
 
