@@ -1,0 +1,11 @@
+﻿BasePaths:
+- D:\GIT\
+- D:\REF\
+- D:\VRM\Projects\
+WindowsTerminalPath: C:\Users\vremond\AppData\Local\Microsoft\WindowsApps\wt.exe
+SourceTreePath: C:\Program Files (x86)\Atlassian\Sourcetree\SourceTree.exe
+VisualStudioCodePath: C:\Program Files\Microsoft VS Code\Code.exe
+VisualStudioPath: C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\devenv.exe
+RiderPaths:
+- C:\Program Files\JetBrains
+- C:\Program Files (x86)\JetBrains
