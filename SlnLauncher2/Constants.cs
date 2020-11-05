@@ -2,6 +2,8 @@
 {
     internal static class Constants
     {
+        // TODO VRM : remove this file
+        
         internal static readonly string[] Paths = { @"D:\GIT\", @"D:\REF\", @"D:\VRM\Projects\" };
         internal static readonly string WindowsTerminalPath = @"C:\Users\vremond\AppData\Local\Microsoft\WindowsApps\wt.exe";
         internal static readonly string SourceTreePath = @"C:\Program Files (x86)\Atlassian\Sourcetree\SourceTree.exe";

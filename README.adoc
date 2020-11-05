@@ -1,0 +1,6 @@
+= SlnLauncher2
+
+== TODO
+
+- [ ] Bug: Fix error on folder start
+- [ ] Improve : use config instead of constants
