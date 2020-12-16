@@ -79,6 +79,7 @@ namespace SlnLauncher2
             return LauncherConfiguration
                 .Current
                 .RiderPaths
+                .Where(Directory.Exists)
                 .SelectMany(
                     p => Directory
                         .GetDirectories(p, "JetBrains Rider *", SearchOption.TopDirectoryOnly)
