@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SlnLauncher2
@@ -21,6 +22,7 @@ namespace SlnLauncher2
                 Keys.Control | Keys.Enter => OpenVisualStudioCode,
                 Keys.Alt | Keys.Enter => OpenSolutionWithVisualStudio,
                 Keys.Alt | Keys.Shift | Keys.Enter => OpenRepositoryWithSourceTree,
+                Keys.Control | Keys.O => OpenRepositoryUrl,
                 _ => null,
             };
             return action != null;
@@ -100,6 +102,21 @@ namespace SlnLauncher2
         {
             var folder = GetDirectoryFullName(item);
             Process.Start(LauncherConfiguration.Current.SourceTreePath, $"-f \"{folder}\"");
+        }
+
+        private static void OpenRepositoryUrl(string item)
+        {
+            var folder = GetDirectoryFullName(item);
+            using var process = new RunProcess.ProcessHost("git.exe", folder);
+            process.Start("config --get remote.origin.url");
+            process.WaitForExit(TimeSpan.MaxValue);
+            var url = process.StdOut.ReadAllText(Encoding.UTF8).Trim();
+            Process.Start(
+                new ProcessStartInfo(url)
+                {
+                    UseShellExecute = true,
+                }
+            );
         }
 
         private static void OpenVisualStudioCode(string item)
