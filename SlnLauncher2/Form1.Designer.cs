@@ -36,6 +36,7 @@ namespace SlnLauncher2
             this.tbxSearch = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lstBaseFolders = new System.Windows.Forms.ListBox();
+            this.buttonReload = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstSln
@@ -58,7 +59,7 @@ namespace SlnLauncher2
             this.tbxSearch.Margin = new System.Windows.Forms.Padding(4);
             this.tbxSearch.Name = "tbxSearch";
             this.tbxSearch.ShortcutsEnabled = false;
-            this.tbxSearch.Size = new System.Drawing.Size(929, 22);
+            this.tbxSearch.Size = new System.Drawing.Size(901, 22);
             this.tbxSearch.TabIndex = 1;
             this.tbxSearch.TextChanged += new System.EventHandler(this.tbxSearch_TextChanged);
             this.tbxSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxSearch_KeyUp);
@@ -70,7 +71,7 @@ namespace SlnLauncher2
             this.label1.Location = new System.Drawing.Point(13, 511);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(214, 119);
+            this.label1.Size = new System.Drawing.Size(197, 112);
             this.label1.TabIndex = 4;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -85,11 +86,23 @@ namespace SlnLauncher2
             this.lstBaseFolders.TabIndex = 6;
             this.lstBaseFolders.SelectedIndexChanged += new System.EventHandler(this.lstBranch_SelectedIndexChanged);
             // 
+            // buttonReload
+            // 
+            this.buttonReload.Anchor = ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonReload.Location = new System.Drawing.Point(1224, 14);
+            this.buttonReload.Name = "buttonReload";
+            this.buttonReload.Size = new System.Drawing.Size(25, 25);
+            this.buttonReload.TabIndex = 7;
+            this.buttonReload.Text = "🔄";
+            this.buttonReload.UseVisualStyleBackColor = true;
+            this.buttonReload.Click += new System.EventHandler(this.buttonReload_Click);
+            // 
             // SlnLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1267, 639);
+            this.Controls.Add(this.buttonReload);
             this.Controls.Add(this.lstBaseFolders);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbxSearch);
@@ -103,6 +116,8 @@ namespace SlnLauncher2
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button buttonReload;
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lstBaseFolders;

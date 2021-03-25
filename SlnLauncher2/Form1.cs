@@ -27,16 +27,21 @@ namespace SlnLauncher2
         {
             UI_InitBaseFolders();
             _projects = TryInitProjectsListFromCache();
+            ReloadProjectsFromDisk();
+        }
+
+        private void ReloadProjectsFromDisk() =>
             Helpers.StartNewThread(
                 () =>
                 {
+                    buttonReload.Enabled = false;
                     var projectsList = UpdateProjectsListFromDisk();
                     SaveProjectsListToLocalCache(projectsList);
                     UI_UpdateProjectList(projectsList);
                     _projects = projectsList;
+                    buttonReload.Enabled = true;
                 }
             );
-        }
 
         private string[] UpdateProjectsListFromDisk()
         {
@@ -227,5 +232,7 @@ namespace SlnLauncher2
             tbxSearch.Focus();
             UI_UpdateProjectList(_projects);
         }
+
+        private void buttonReload_Click(object sender, EventArgs e) => ReloadProjectsFromDisk();
     }
 }
