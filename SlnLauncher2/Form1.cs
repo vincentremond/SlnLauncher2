@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,12 +34,12 @@ namespace SlnLauncher2
             Helpers.StartNewThread(
                 () =>
                 {
-                    buttonReload.Enabled = false;
+                    buttonReload.InvokeIfRequired(() =>  buttonReload.Enabled = false);
                     var projectsList = UpdateProjectsListFromDisk();
                     SaveProjectsListToLocalCache(projectsList);
                     UI_UpdateProjectList(projectsList);
                     _projects = projectsList;
-                    buttonReload.Enabled = true;
+                    buttonReload.InvokeIfRequired(() =>  buttonReload.Enabled = true);
                 }
             );
 
@@ -234,5 +234,10 @@ namespace SlnLauncher2
         }
 
         private void buttonReload_Click(object sender, EventArgs e) => ReloadProjectsFromDisk();
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

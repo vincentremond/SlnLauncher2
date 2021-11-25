@@ -7,7 +7,6 @@ namespace SlnLauncher2
     {
         public string[] BasePaths { get; set; }
         public string WindowsTerminalPath { get; set; }
-        public string SourceTreePath { get; set; }
         public string VisualStudioCodePath { get; set; }
         public string VisualStudioPath { get; set; }
         public string[] RiderPaths { get; set; }

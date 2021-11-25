@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SlnLauncher2
@@ -16,16 +17,41 @@ namespace SlnLauncher2
             action = key switch
             {
                 Keys.Alt | Keys.T => OpenWindowsTerminal,
-                Keys.Alt | Keys.S => OpenRepositoryWithSourceTree,
                 Keys.None | Keys.Enter => OpenSolutionWithRider,
                 Keys.Shift | Keys.Enter => OpenContainingFolder,
                 Keys.Control | Keys.Enter => OpenVisualStudioCode,
                 Keys.Alt | Keys.Enter => OpenSolutionWithVisualStudio,
-                Keys.Alt | Keys.Shift | Keys.Enter => OpenRepositoryWithSourceTree,
                 Keys.Control | Keys.O => OpenRepositoryUrl,
+                Keys.Control | Keys.K => CloneRepository,
                 _ => null,
             };
             return action != null;
+        }
+
+        private static void CloneRepository(string item)
+        {
+            var outputDirectory = "D:\\GIT";
+
+            string Clone(string s)
+            {
+                using var process = new RunProcess.ProcessHost("git.exe", outputDirectory);
+                process.Start($"clone {s}");
+                process.WaitForExit(TimeSpan.MaxValue);
+                return process.StdErr.ReadAllText(Encoding.UTF8);
+            }
+
+            string GetTargetDirectory(string cloneOutput)
+            {
+                var regex = "^Cloning into \'(?<Folder>.+?)\'";
+                var match = Regex.Match(cloneOutput, regex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                var outputFolder = match.Groups["Folder"].Value;
+                return Path.Join(outputDirectory, outputFolder);
+            }
+
+            var url = GetRepositoryUrl(item);
+            var cloneOutput = Clone(url);
+            var targetDirectory = GetTargetDirectory(cloneOutput);
+            Process.Start("explorer.exe", targetDirectory);
         }
 
         internal static void DefaultAction(string item) => OpenSolutionWithRider(item);
@@ -98,25 +124,25 @@ namespace SlnLauncher2
                    ?? throw new ApplicationException($"Failed to find directory for {item}");
         }
 
-        private static void OpenRepositoryWithSourceTree(string item)
-        {
-            var folder = GetDirectoryFullName(item);
-            Process.Start(LauncherConfiguration.Current.SourceTreePath, $"-f \"{folder}\"");
-        }
-
         private static void OpenRepositoryUrl(string item)
         {
-            var folder = GetDirectoryFullName(item);
-            using var process = new RunProcess.ProcessHost("git.exe", folder);
-            process.Start("config --get remote.origin.url");
-            process.WaitForExit(TimeSpan.MaxValue);
-            var url = process.StdOut.ReadAllText(Encoding.UTF8).Trim();
+            var url = GetRepositoryUrl(item);
             Process.Start(
                 new ProcessStartInfo(url)
                 {
                     UseShellExecute = true,
                 }
             );
+        }
+
+        private static string GetRepositoryUrl(string item)
+        {
+            var folder = GetDirectoryFullName(item);
+            using var process = new RunProcess.ProcessHost("git.exe", folder);
+            process.Start("config --get remote.origin.url");
+            process.WaitForExit(TimeSpan.MaxValue);
+            var url = process.StdOut.ReadAllText(Encoding.UTF8).Trim();
+            return url;
         }
 
         private static void OpenVisualStudioCode(string item)
