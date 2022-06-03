@@ -100,7 +100,7 @@ namespace SlnLauncher2
             var gitForkPath = LauncherConfigurationContainer.Current.ForkPath;
 
             Process.Start(
-                new ProcessStartInfo(fileName: gitForkPath) { WorkingDirectory = directory, }
+                new ProcessStartInfo(fileName: gitForkPath, arguments: directory) { WorkingDirectory = directory, }
             );
         }
 
