@@ -23,6 +23,7 @@ namespace SlnLauncher2
                 Keys.Alt | Keys.Enter => OpenSolutionWithVisualStudio,
                 Keys.Control | Keys.O => OpenRepositoryUrl,
                 Keys.Control | Keys.K => CloneRepository,
+                Keys.Control | Keys.F => OpenGitFork,
                 _ => null,
             };
             return action != null;
@@ -86,13 +87,20 @@ namespace SlnLauncher2
         private static void OpenWindowsTerminal(string item)
         {
             var directory = GetDirectoryFullName(item);
-            var windowsTerminal = LauncherConfiguration.Current.WindowsTerminalPath;
+            var windowsTerminal = LauncherConfigurationContainer.Current.WindowsTerminalPath;
 
             Process.Start(
-                new ProcessStartInfo(fileName: windowsTerminal)
-                {
-                    WorkingDirectory = directory,
-                }
+                new ProcessStartInfo(fileName: windowsTerminal) { WorkingDirectory = directory, }
+            );
+        }
+
+        private static void OpenGitFork(string item)
+        {
+            var directory = GetDirectoryFullName(item);
+            var gitForkPath = LauncherConfigurationContainer.Current.ForkPath;
+
+            Process.Start(
+                new ProcessStartInfo(fileName: gitForkPath) { WorkingDirectory = directory, }
             );
         }
 
@@ -104,7 +112,7 @@ namespace SlnLauncher2
 
         private static string GetRiderPath()
         {
-            return LauncherConfiguration
+            return LauncherConfigurationContainer
                 .Current
                 .RiderPaths
                 .Where(Directory.Exists)
@@ -128,10 +136,7 @@ namespace SlnLauncher2
         {
             var url = GetRepositoryUrl(item);
             Process.Start(
-                new ProcessStartInfo(url)
-                {
-                    UseShellExecute = true,
-                }
+                new ProcessStartInfo(url) { UseShellExecute = true, }
             );
         }
 
@@ -148,7 +153,7 @@ namespace SlnLauncher2
         private static void OpenVisualStudioCode(string item)
         {
             var directory = GetDirectoryFullName(item);
-            var path = LauncherConfiguration.Current.VisualStudioCodePath;
+            var path = LauncherConfigurationContainer.Current.VisualStudioCodePath;
             Process.Start(path, directory);
         }
 
@@ -160,7 +165,7 @@ namespace SlnLauncher2
                 return;
             }
 
-            Process.Start(LauncherConfiguration.Current.VisualStudioPath, fi.FullName);
+            Process.Start(LauncherConfigurationContainer.Current.VisualStudioPath, fi.FullName);
         }
     }
 }

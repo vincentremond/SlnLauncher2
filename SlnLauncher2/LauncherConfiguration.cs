@@ -1,16 +1,19 @@
 ﻿using System;
 
-namespace SlnLauncher2
-{
-    [Serializable]
-    public class LauncherConfiguration
-    {
-        public string[] BasePaths { get; set; }
-        public string WindowsTerminalPath { get; set; }
-        public string VisualStudioCodePath { get; set; }
-        public string VisualStudioPath { get; set; }
-        public string[] RiderPaths { get; set; }
+namespace SlnLauncher2;
 
-        internal static LauncherConfiguration Current { get; set; }
-    }
+[Serializable]
+public record LauncherConfiguration(
+    string[] BasePaths,
+    string WindowsTerminalPath,
+    string VisualStudioCodePath,
+    string VisualStudioPath,
+    string ForkPath,
+    string[] RiderPaths
+);
+
+internal static class LauncherConfigurationContainer
+{
+    internal static LauncherConfiguration Current { get; set; }
 }
+

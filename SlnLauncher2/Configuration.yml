@@ -3,9 +3,11 @@
 - D:\REF\
 - D:\VRM\Projects\
 - D:\TMP\
+- D:\DAT\2022.05.10-CheckPciByPass\
 WindowsTerminalPath: C:\Users\vremond\AppData\Local\Microsoft\WindowsApps\wt.exe
 VisualStudioCodePath: C:\Program Files\Microsoft VS Code\Code.exe
-VisualStudioPath: C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\devenv.exe
+VisualStudioPath: C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe
+ForkPath: C:\Users\vremond\AppData\Local\Fork\Fork.exe
 RiderPaths:
 - C:\Program Files\JetBrains
 - C:\Program Files (x86)\JetBrains

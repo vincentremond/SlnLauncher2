@@ -45,7 +45,7 @@ namespace SlnLauncher2
 
         private string[] UpdateProjectsListFromDisk()
         {
-            var all = LauncherConfiguration.Current
+            var all = LauncherConfigurationContainer.Current
                 .BasePaths
                 .SelectMany(path => GetFiles(path).SelectMany(s => s))
                 .ToArray();
@@ -92,7 +92,7 @@ namespace SlnLauncher2
         private void UI_InitBaseFolders()
         {
             lstBaseFolders.Items.Clear();
-            lstBaseFolders.Items.AddRange(LauncherConfiguration.Current.BasePaths.ToArray<object>());
+            lstBaseFolders.Items.AddRange(LauncherConfigurationContainer.Current.BasePaths.ToArray<object>());
             lstBaseFolders.Items.Add("");
             lstBaseFolders.SelectedIndex = 0;
         }
