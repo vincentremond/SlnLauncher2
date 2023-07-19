@@ -23,6 +23,7 @@ namespace SlnLauncher2
                 Keys.Alt | Keys.Enter => OpenSolutionWithVisualStudio,
                 Keys.Control | Keys.O => OpenRepositoryUrl,
                 Keys.Control | Keys.K => CloneRepository,
+                Keys.Alt | Keys.F => OpenGitFork,
                 Keys.Control | Keys.F => OpenGitFork,
                 _ => null,
             };
