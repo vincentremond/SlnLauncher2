@@ -1,9 +1,8 @@
-﻿namespace SlnLauncher2.DTO
+﻿namespace SlnLauncher2.DTO;
+
+internal class DirectoryDescriptor : ItemDescriptor
 {
-    internal class DirectoryDescriptor : ItemDescriptor
+    public DirectoryDescriptor(string path, string name) : base(path, name)
     {
-        public DirectoryDescriptor(string path, string name) : base(path, name)
-        {
-        }
     }
 }

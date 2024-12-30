@@ -2,4 +2,9 @@ source https://api.nuget.org/v3/index.json
 
 storage: none
 framework: auto-detect
+nuget Microsoft.NET.Test.Sdk
 nuget NewtonSoft.Json
+nuget nunit
+nuget NUnit3TestAdapter
+nuget RunProcess
+nuget YamlDotNet
